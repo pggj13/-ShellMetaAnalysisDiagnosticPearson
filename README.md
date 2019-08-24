@@ -1,0 +1,2 @@
+# -ShellMetaAnalysisDiagnosticPearson
+TCC  ShellMetaAnalysisDiagnosticPearson

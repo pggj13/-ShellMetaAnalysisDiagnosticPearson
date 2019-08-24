@@ -1,0 +1,441 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Shell Meta-Analysis Diagnostic Pearson</title>
+        <link rel="stylesheet" href="css/styles.css" ></link>
+    </h:head>
+    <h:body>
+        <div class="center_content"  >
+            <h:form id="mainForm">
+                <h:panelGrid columns="6" cellpadding="7">
+                    <p:outputLabel for="precisao" value="Precisão:" />
+                    <p:selectOneMenu id="precisao" value="#{diagnosticTest.precisao}" style="width:125px">
+                        <f:selectItem itemLabel="1" itemValue="1" />
+                        <f:selectItem itemLabel="2" itemValue="2" />
+                        <f:selectItem itemLabel="3" itemValue="3" />
+                        <f:selectItem itemLabel="4" itemValue="4" />
+                        <f:selectItem itemLabel="5" itemValue="5" />
+                        <f:selectItem itemLabel="6" itemValue="6" />
+                        <f:selectItem itemLabel="7" itemValue="7" />
+                        <f:selectItem itemLabel="8" itemValue="8" />
+                        <f:selectItem itemLabel="9" itemValue="9" />
+                        <f:selectItem itemLabel="10" itemValue="10" />
+                    </p:selectOneMenu>
+                    <p:outputLabel for="arredondamento" value="Arredondamento:" />
+                    <p:selectOneMenu id="arredondamento" value="#{diagnosticTest.arredondamento}" style="width:125px; text-align: left">
+                        <f:selectItem itemValue="T" itemLabel="Truncar" />
+                        <f:selectItem itemValue="B" itemLabel="Para baixo" />
+                        <f:selectItem itemValue="C" itemLabel="Para cima" />
+                    </p:selectOneMenu> 
+                    <p:outputLabel for="intervaloConfiaca" value="Intervalo de confiança:" />
+                    <p:selectOneMenu id="intervaloConfiaca" value="#{diagnosticTest.intervaloConfiaca}" style="width:125px">
+                        <f:selectItem itemValue="90" itemLabel="90%" />
+                        <f:selectItem itemValue="95" itemLabel="95%" />
+                        <f:selectItem itemValue="98" itemLabel="98%" />
+                        <f:selectItem itemValue="99" itemLabel="99%" />
+                    </p:selectOneMenu>
+                </h:panelGrid>
+                <br/>
+                <h:panelGrid columns="4" cellpadding="7">
+                    <p:outputLabel for="testeDiagnostico" value="Teste aplicado:" />
+                    <p:selectOneMenu id="testeDiagnostico" value="#{diagnosticTest.testeDiagnostico}" style="width:105%">
+                        <f:selectItem itemValue="sensibilidadeEspecificidade" itemLabel="Sensibilidade/Especificidade" />
+                        <f:selectItem itemValue="dersimonianLaird" itemLabel="Odds Ratio - Efeito Randômico (DerSimonian e Laird)" />
+                        <f:selectItem itemValue="mantelHaenszel" itemLabel="Odds Ratio - Efeito Fixo (Mantel-Haenszel)" />
+                        <f:selectItem itemValue="likelihoodRatioPositivaNegativa" itemLabel="Razão de Verossimilhança - Efeito Fixo (Mantel-Haenszel)"/>
+                        <!-- <f:selectItem itemValue="receiverOperatingCharacteristic" itemLabel="Curva ROC/SROC"/>-->
+
+                    </p:selectOneMenu>
+                </h:panelGrid>
+                <p:dataTable id="t-estudos" var="estudo" value="#{diagnosticTest.estudosDigitado}" >
+                    <f:facet name="header">
+                        Meta-Análise Diagnóstica
+                    </f:facet>
+                    <p:column styleClass="w-40">
+                        <f:facet name="header">
+                            <h:outputText value="Estudos" />
+                        </f:facet>
+                        <p:inputText styleClass="w-95" value="#{estudo.nome}" />
+                    </p:column>
+                    <p:column styleClass="w-15">
+                        <f:facet name="header">
+                            <h:outputText value="Verdadeiro positivo" />
+                        </f:facet>
+                        <p:inputText styleClass="w-90" value="#{estudo.verdadeiroPositivo}" />
+                    </p:column>
+                    <p:column styleClass="w-15">
+                        <f:facet name="header">
+                            <h:outputText value="Falso positivo" />
+                        </f:facet>
+                        <p:inputText styleClass="w-90" value="#{estudo.falsoPositivo}" />
+                    </p:column>
+                    <p:column styleClass="w-15">
+                        <f:facet name="header">
+                            <h:outputText value="Falso negativo" />
+                        </f:facet>
+                        <p:inputText styleClass="w-90" value="#{estudo.falsoNegativo}" />
+                    </p:column>
+                    <p:column styleClass="w-15">
+                        <f:facet name="header">
+                            <h:outputText value="Verdadeiro negativo" />
+                        </f:facet>
+                        <p:inputText styleClass="w-90" value="#{estudo.verdadeiroNegativo}" />
+                    </p:column>
+                    <p:column styleClass="w-10" style="text-align: center;">
+                        <f:facet name="header">
+                            <h:outputText value="Excluir" />
+                        </f:facet>
+                        <p:commandButton value="X" title="Excluir estudo" style="background-color: transparent; border: 0;" action="#{diagnosticTest.exluirEstudo(estudo)}" update="mainForm:t-estudos" />
+                    </p:column>
+                    <f:facet name="footer">        
+                        <div style="width: 100%; text-align: left; display: inline-block;">
+                            <p:commandButton value="Adicionar" style="margin: 5px" action="#{diagnosticTest.addEstudo}" update="mainForm:t-estudos" />
+                            <p:commandButton value="Calcular" style="margin: 5px" action="#{diagnosticTest.calcular}" update="mainForm" />
+                            <p:commandButton value="" style="margin: 5px; float: right;" action="#{diagnosticTest.addEstudos}" update="mainForm:t-estudos" />
+                        </div>
+                    </f:facet>
+                </p:dataTable>
+                <!--Mantel-Haenszel-->
+                <p:dataTable id="t-resultados" style="margin-top: 20px;display:#{diagnosticTest.visivelMantelHenzel}" var="estudoCalculado" value="#{diagnosticTest.estudosCalculados}">
+                    <f:facet name="header">
+                        Resultado <i>Diagnostic Odds Ratio</i> (Efeito fixo Mantel-Haenszel)
+                    </f:facet>
+                    <p:columnGroup type="header">
+                        <p:row>
+                            <p:column styleClass="w-40" rowspan="2" headerText="Pesquisa" />
+                            <p:column styleClass="w-15" rowspan="2" headerText="DOR" />
+                            <p:column styleClass="w-30" colspan="2" headerText="[Iterval. Conf.]" />
+                            <p:column styleClass="w-15" rowspan="2" headerText="Peso(%)" />
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="1" headerText="Inferior" />
+                            <p:column colspan="1" headerText="Superior" />
+                        </p:row>
+                    </p:columnGroup>
+                    <p:column>
+                        <h:outputText value="#{estudoCalculado.nome}" />
+                    </p:column>
+                    <p:column styleClass="text-right">
+                        <h:outputText value="#{estudoCalculado.oddsRatio}"/>
+                    </p:column>
+                    <p:column styleClass="text-right">
+                        <h:outputText value="#{estudoCalculado.intervaloConfiancaInferior}" />
+                    </p:column>
+                    <p:column styleClass="text-right">                    
+                        <h:outputText value="#{estudoCalculado.intervaloConfiancaSuperior}" />
+                    </p:column>
+                    <p:column styleClass="text-right">
+                        <h:outputText value="#{estudoCalculado.percentualPeso}" />
+                    </p:column>
+                    <f:facet name="footer">
+                        <div style="width: 100%; text-align: left; display: inline-block;">
+                            <label class="w-40 footer-cell">DOR agrupada</label>
+                            <h:outputLabel style="margin-left: -8px;" styleClass="w-15 footer-cell text-right" value="#{diagnosticTest.oddsRatioMantelHaenszel}" />
+                            <h:outputLabel style="margin-left: 3px;" styleClass="w-15 footer-cell text-right" value="#{diagnosticTest.mhLimiteInferior}" />
+                            <h:outputLabel style="margin-left: 3px;" styleClass="w-15 footer-cell text-right" value="#{diagnosticTest.mhLimiteSuperior}" />
+                        </div>  
+                        <div style="width: 100%; text-align: left; display: inline-block;">
+                            <label class="footer-cell">Heterogeneidade qui-quadrado:</label>
+                            <h:outputLabel style="margin-left: 3px;" styleClass="footer-cell text-right" value="#{diagnosticTest.chiSquared}" />
+                        </div>
+                        <div style="width: 100%; text-align: left; display: inline-block;">
+                            <label class="footer-cell">I-quadrado(%):</label>
+                            <h:outputLabel style="margin-left: 3px;" styleClass="footer-cell text-right" value="#{diagnosticTest.ISquared}" />
+                        </div>
+                    </f:facet>
+                </p:dataTable>
+                <!--Sensibilidade-->
+                <p:dataTable id="t-resultadosSens" style="margin-top: 20px;display:#{diagnosticTest.visivelSensibEspec}" var="estudoCalculado" value="#{diagnosticTest.estudosCalculados}">
+                    <f:facet name="header">
+                        Resultado <i>Sensibilidade</i>
+                    </f:facet>
+                    <p:columnGroup type="header">
+                        <p:row>
+                            <p:column styleClass="w-40" rowspan="2" headerText="Pesquisa" />
+                            <p:column styleClass="w-15" rowspan="2" headerText="Sensibilidade" />
+                            <p:column styleClass="w-30" colspan="2" headerText="[Iterval. Conf.]" />
+
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="1" headerText="Inferior" />
+                            <p:column colspan="1" headerText="Superior" />
+                        </p:row>
+                    </p:columnGroup>
+                    <p:column>
+                        <h:outputText value="#{estudoCalculado.nome}" />
+                    </p:column>
+                    <p:column styleClass="text-right">
+                        <h:outputText value="#{estudoCalculado.sen}" />
+                    </p:column>
+                    <p:column styleClass="text-right">
+                        <h:outputText value="#{estudoCalculado.intervaloConfiancaInferiorSens}" />
+                    </p:column>
+                    <p:column styleClass="text-right">                    
+                        <h:outputText value="#{estudoCalculado.intervaloConfiancaSuperiorSens}" />
+                    </p:column>
+
+                    <f:facet name="footer">
+                        <div style="width: 100%; text-align: left; display: inline-block;">
+                            <label class="w-40 footer-cell">Sensibilidade agrupada</label>
+                            <h:outputLabel style="margin-left: 0px;"  styleClass="w-20 footer-cell text-right" value="#{diagnosticTest.senMantelHaenszel}" />
+                            <h:outputLabel style="margin-left: 0px;"  styleClass="w-20 footer-cell text-right"  value="#{diagnosticTest.mhLimiteInferiorSen}"  />
+                            <h:outputLabel style="margin-left: 0px;"  styleClass="w-20 footer-cell text-right" value="#{diagnosticTest.mhLimiteSuperiorSen}" />
+                        </div>  
+                    </f:facet>
+                </p:dataTable>
+                <!--Especificidade-->
+                <p:dataTable id="t-resultadosSpec" style="margin-top: 20px;display:#{diagnosticTest.visivelSensibEspec}" var="estudoCalculado" value="#{diagnosticTest.estudosCalculados}">
+                    <f:facet name="header">
+                        Resultado <i>Especificidade</i>
+                    </f:facet>
+                    <p:columnGroup type="header">
+                        <p:row>
+                            <p:column styleClass="w-40" rowspan="2" headerText="Pesquisa" />
+                            <p:column styleClass="w-15" rowspan="2" headerText="Especificidade" />
+                            <p:column styleClass="w-30" colspan="2" headerText="[Iterval. Conf.]" />
+
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="1" headerText="Inferior" />
+                            <p:column colspan="1" headerText="Superior" />
+                        </p:row>
+                    </p:columnGroup>
+                    <p:column>
+                        <h:outputText value="#{estudoCalculado.nome}" />
+                    </p:column>
+                    <p:column styleClass="text-right">
+                        <h:outputText value="#{estudoCalculado.specy}"  />
+                    </p:column>
+                    <p:column styleClass="text-right">
+                        <h:outputText value="#{estudoCalculado.intervaloConfiancaInferiorSpec}"  />
+                    </p:column>
+                    <p:column styleClass="text-right">                    
+                        <h:outputText value="#{estudoCalculado.intervaloConfiancaSuperiorSpec}" />
+                    </p:column>
+
+                    <f:facet name="footer">
+                        <div style="width: 100%; text-align: left;  display: inline-block;">
+                            <label class="w-40 footer-cell">Especificidade agrupada</label>
+                            <h:outputLabel style="margin-left: 0px;"  styleClass="w-20 footer-cell text-right" value="#{diagnosticTest.specMantelHaenszel}" />
+                            <h:outputLabel style="margin-left: 0px;" styleClass="w-20 footer-cell text-right" value="#{diagnosticTest.mhLimiteInferiorSpec}" />
+                            <h:outputLabel style="margin-left: 0px;"  styleClass="w-20 footer-cell text-right"  value="#{diagnosticTest.mhLimiteSuperiorSpec}" />
+                        </div>  
+                    </f:facet>
+                </p:dataTable>
+
+                <!--Dersimonian-->
+                <p:dataTable id="t-resultadosDersimonian" style="margin-top: 20px;display:#{diagnosticTest.visivelDersimonian}" var="estudoCalculado" value="#{diagnosticTest.estudosCalculados}">
+                    <f:facet name="header">
+                        Resultado <i>Diagnostic Odds Ratio</i> (Efeito randômico DerSimonian e Laird)
+                    </f:facet>
+                    <p:columnGroup type="header">
+                        <p:row>
+                            <p:column styleClass="w-40" rowspan="2" headerText="Pesquisa" />
+                            <p:column styleClass="w-15" rowspan="2" headerText="DOR" />
+                            <p:column styleClass="w-30" colspan="2" headerText="[Iterval. Conf.]" />
+                            <p:column styleClass="w-15" rowspan="2" headerText="Peso(%)" />
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="1" headerText="Inferior" />
+                            <p:column colspan="1" headerText="Superior" />
+                        </p:row>
+                    </p:columnGroup>
+                    <p:column>
+                        <h:outputText value="#{estudoCalculado.nome}" />
+                    </p:column>
+                    <p:column styleClass="text-right">
+                        <h:outputText value="#{estudoCalculado.oddsRatio}" />
+                    </p:column>
+                    <p:column styleClass="text-right">
+                        <h:outputText value="#{estudoCalculado.intervaloConfiancaInferior}"  />
+                    </p:column>
+                    <p:column styleClass="text-right">                    
+                        <h:outputText value="#{estudoCalculado.intervaloConfiancaSuperior}" />
+                    </p:column>
+                    <p:column styleClass="text-right">
+                        <h:outputText value="#{estudoCalculado.percentualPeso}" />
+                    </p:column>
+                    <f:facet name="footer">
+                        <div style="width: 100%; text-align: left; display: inline-block;">
+                            <label class="w-40 footer-cell">DOR agrupada</label>
+                            <h:outputLabel style="margin-left: -8px;" styleClass="w-15 footer-cell text-right" value="#{diagnosticTest.oddsRatioMantelHaenszel}" />
+                            <h:outputLabel style="margin-left: 3px;" styleClass="w-15 footer-cell text-right" value="#{diagnosticTest.mhLimiteInferior}" />
+                            <h:outputLabel style="margin-left: 3px;" styleClass="w-15 footer-cell text-right" value="#{diagnosticTest.mhLimiteSuperior}" />
+                        </div>  
+
+                        <div style="width: 100%; text-align: left; display: inline-block;">
+                            <label class="footer-cell">Heterogeneidade qui-quadrado:</label>
+                            <h:outputLabel style="margin-left: 3px;" styleClass="footer-cell text-right" value="#{diagnosticTest.chiSquared}" />
+                        </div>
+                        <div style="width: 100%; text-align: left; display: inline-block;">
+                            <label class="footer-cell">I-quadrado(%):</label>
+                            <h:outputLabel style="margin-left: 3px;" styleClass="footer-cell text-right" value="#{diagnosticTest.ISquared}" />
+                        </div>
+                        <div style="width: 100%; text-align: left; display: inline-block;">
+                            <label class="footer-cell">Tau-quadrado (tau²):</label>
+                            <h:outputLabel style="margin-left: 3px;" styleClass="footer-cell text-right" value="#{diagnosticTest.tauQuadrado}" />
+                        </div>
+                        <div style="width: 100%; text-align: left; display: inline-block;">
+                            <label class="footer-cell">Nº de estudos:</label>
+                            <h:outputLabel style="margin-left: 3px;" styleClass="footer-cell text-right" value="#{diagnosticTest.numeroDeEstudos}"/>
+                        </div>
+                    </f:facet>
+                </p:dataTable>
+
+                <!--Likelihood Ratio Mantel Haenszel-->
+                <!--Positiva-->
+                <p:dataTable id="t-resultadoLikelihoodRatio" style="margin-top: 20px; display: #{diagnosticTest.visivelLikelihoodRatioPositivaNegativa}" var="estudoCalculado" value="#{diagnosticTest.estudosCalculados}" >
+                    <f:facet name="header">
+                        <i>Razão de Verossimilhança Positiva</i> (Efeito Fixo Mantel Haenszel)
+                    </f:facet>
+                    <p:columnGroup type="header">
+                        <p:row>
+                            <p:column styleClass="w-40" rowspan="2" headerText="Estudos" />
+                            <p:column styleClass="w-15" rowspan="2" headerText="RV Positiva" />
+                            <p:column styleClass="w-30" colspan="2" headerText="[Interval. Conf.]" />
+                            <p:column styleClass="w-15" rowspan="2" headerText="Peso(%)" />
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="1" headerText="Inferior" />
+                            <p:column colspan="1" headerText="Superior" />
+                        </p:row>
+                    </p:columnGroup>
+                    <p:column>
+                        <h:outputText value="#{estudoCalculado.nome}"/>
+                    </p:column>
+                    <p:column styleClass="text-right">
+                        <h:outputText value="#{estudoCalculado.positiveLikelihoodRatio}"/>
+                    </p:column>
+                    <p:column styleClass="text-right">
+                        <h:outputText value="#{estudoCalculado.intervaloConfiancaInferiorLRPositiva}"/>
+                    </p:column>
+                    <p:column styleClass="text-right">
+                        <h:outputText value="#{estudoCalculado.intervaloConfiancaSuperiorLRPositiva}"/>
+                    </p:column>
+                    <p:column styleClass="text-right">
+                        <h:outputText value="#{estudoCalculado.percentualPesoLRPositiva}"/>
+                    </p:column>
+
+                    <f:facet name="footer">
+                        <div style="width: 100%; text-align: left; display: inline-block">
+                            <label class="w-40 footer-cell">RV Positiva Agrupada</label>
+                            <h:outputLabel style="margin-left: -8px;" styleClass="w-15 footer-cell text-right" value="#{diagnosticTest.likelihoodRatioPositiva}" />
+                            <h:outputLabel style="margin-left: 3px;" styleClass="w-15 footer-cell text-right" value="#{diagnosticTest.intervaloConfiancaInferiorPositivo}" />
+                            <h:outputLabel style="margin-left: 3px;" styleClass="w-15 footer-cell text-right" value="#{diagnosticTest.intervaloConfiancaSuperiorPositivo}" />
+                        </div>
+                        <div style="width: 100%; text-align: left; display: inline-block;">
+                            <label class="footer-cell">Erro Padrão (lnLR+):</label>
+                            <h:outputLabel style="margin-left: 3px;" styleClass="footer-cell text-right" value="#{diagnosticTest.erroPadraoLRPositiva}" />
+                        </div>
+                        <div style="width: 100%; text-align: left; display: inline-block;">
+                            <label class="footer-cell">Nº de estudos:</label>
+                            <h:outputLabel style="margin-left: 3px;" styleClass="footer-cell text-right" value="#{diagnosticTest.numeroDeEstudos}"/>
+                        </div>
+                    </f:facet>
+                </p:dataTable>
+
+                <!--Negativa-->
+                <p:dataTable id="t-resultadoLikelihoodRatioNegativa" style="margin-top: 20px; display: #{diagnosticTest.visivelLikelihoodRatioPositivaNegativa}" var="estudoCalculado" value="#{diagnosticTest.estudosCalculados}" >
+                    <f:facet name="header">
+                        <i>Razão de Verossimilhança Negativa</i> (Efeito Fixo Mantel Haenszel)
+                    </f:facet>
+                    <p:columnGroup type="header">
+                        <p:row>
+                            <p:column styleClass="w-40" rowspan="2" headerText="Estudos" />
+                            <p:column styleClass="w-15" rowspan="2" headerText="RV Negativa" />
+                            <p:column styleClass="w-30" colspan="2" headerText="[Interval. Conf.]" />
+                            <p:column styleClass="w-15" rowspan="2" headerText="Peso(%)" />
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="1" headerText="Inferior" />
+                            <p:column colspan="1" headerText="Superior" />
+                        </p:row>
+                    </p:columnGroup>
+                    <p:column>
+                        <h:outputText value="#{estudoCalculado.nome}"/>
+                    </p:column>
+                    <p:column styleClass="text-right">
+                        <h:outputText value="#{estudoCalculado.negativeLikelihoodRatio}"/>
+                    </p:column>
+                    <p:column styleClass="text-right">
+                        <h:outputText value="#{estudoCalculado.intervaloConfiancaInferiorLRNegativa}"/>
+                    </p:column>
+                    <p:column styleClass="text-right">
+                        <h:outputText value="#{estudoCalculado.intervaloConfiancaSuperiorLRNegativa}"/>
+                    </p:column>
+                    <p:column styleClass="text-right">
+                        <h:outputText value="#{estudoCalculado.percentualPesoLRNegativa}"/>
+                    </p:column>
+
+                    <f:facet name="footer">
+                        <div style="width: 100%; text-align: left; display: inline-block">
+                            <label class="w-40 footer-cell">RV Negativa Agrupada</label>
+                            <h:outputLabel style="margin-left: -8px;" styleClass="w-15 footer-cell text-right" value="#{diagnosticTest.likelihoodRatioNegativa}" />
+                            <h:outputLabel style="margin-left: 3px;" styleClass="w-15 footer-cell text-right" value="#{diagnosticTest.intervaloConfiancaInferiorNegativo}" />
+                            <h:outputLabel style="margin-left: 3px;" styleClass="w-15 footer-cell text-right" value="#{diagnosticTest.intervaloConfiancaSuperiorNegativo}" />
+                        </div>
+                        <div style="width: 100%; text-align: left; display: inline-block;">
+                            <label class="footer-cell">Erro Padrão (lnLR-):</label>
+                            <h:outputLabel style="margin-left: 3px;" styleClass="footer-cell text-right" value="#{diagnosticTest.erroPadraoLRNegativa}" />
+                        </div>
+                        <div style="width: 100%; text-align: left; display: inline-block;">
+                            <label class="footer-cell">Nº de estudos:</label>
+                            <h:outputLabel style="margin-left: 3px;" styleClass="footer-cell text-right" value="#{diagnosticTest.numeroDeEstudos}"/>
+                        </div>
+                    </f:facet>
+                </p:dataTable>                
+                <p:commandButton value="Desenhar Gráfico" style="margin: 10px 5px 10px 0; float: left; display:#{diagnosticTest.visivelBtnPlot}" action="#{diagnosticTest.DrawForestPlot}" update="mainForm"/>                  
+
+                <p:outputLabel for="maxp" style="margin-top: 15px; float: left; display:#{diagnosticTest.visivelBtnPlot}" value="Máximo positivo:" />
+                <p:selectOneMenu id="maxp" style="margin: 10px; float: left; display:#{diagnosticTest.visivelBtnPlot}; width:125px" value="#{diagnosticTest.maxp}">
+                    <f:selectItem itemLabel="100" itemValue="100" />
+                    <f:selectItem itemLabel="300" itemValue="300" />
+                    <f:selectItem itemLabel="500" itemValue="500" />
+                </p:selectOneMenu>
+                <p:selectBooleanCheckbox id="checkboxMB" style="margin-top: 15px; float: left; display:#{diagnosticTest.visivelBtnPlot}" itemLabel="Modelo Básico" value="#{diagnosticTest.isBasicPlot}"/>
+                <p:commandButton value="Curva Roc" style="margin: 10px; float: left; display:#{diagnosticTest.visivelBtnPlot}" action="#{diagnosticTest.DrawRoc}" update="mainForm"/>                  
+                <p:selectOneMenu  style="margin: 10px 0 10px 10px;width: 170px; float: left; display:#{diagnosticTest.visivelBtnPlot}" value="#{diagnosticTest.typeEfeito}">
+                    <f:selectItem itemLabel="Efeito Fixo" itemValue="EF" />
+                    <f:selectItem itemLabel="Efeito Randômico" itemValue="ER" />
+                </p:selectOneMenu>
+                <p></p>
+
+                <div id="plots" style="padding: auto; margin-top: 10px;"> 
+
+                    <h:outputText style="width: 99%; border: 2px solid #a8a8a8; border-radius: 10px; display:#{diagnosticTest.visivelPlot_1}" escape="false" value="#{diagnosticTest.imgPlot}" />
+                    <div style="width: 98%; text-align: right;" class="imgBaixar">
+                        <button id="baixarSVG"  style="font: bold 14px Arial, Helvetica, sans-serif; background: rgb(242, 242, 242); color: rgb(0, 0, 0); text-shadow: rgb(255, 255, 255) -1px 1px 0px; border: 0px solid rgb(255, 255, 255); box-shadow: rgb(0, 0, 0) 0px 0px 7px; border-radius: 10px; padding: 7px 20px; cursor: pointer; display:#{diagnosticTest.visivelPlot_1}; " onclick="saveSvg1()">Baixar</button>    
+                    </div>
+                    <p></p>
+                    <h:outputText style="width: 99%; border: 2px solid #a8a8a8; border-radius: 10px; display:#{diagnosticTest.visivelPlot_2}" escape="false" value="#{diagnosticTest.imgPlot_2}" />
+                    <div style="width: 98%; text-align: right;" class="imgBaixar">
+                        <button id="baixarSVG2" style="font: bold 14px Arial, Helvetica, sans-serif; background: rgb(242, 242, 242); color: rgb(0, 0, 0); text-shadow: rgb(255, 255, 255) -1px 1px 0px; border: 0px solid rgb(255, 255, 255); box-shadow: rgb(0, 0, 0) 0px 0px 7px; border-radius: 10px; padding: 7px 20px; cursor: pointer; display:#{diagnosticTest.visivelPlot_2}" onclick="saveSvg2()">Baixar</button>
+                    </div>
+                    <h:outputText style="width:99%; border: 2px solid #a8a8a8; border-radius: 10px; display:#{diagnosticTest.visivelPlotRoc}" escape="false" value="#{diagnosticTest.imgPlotRoc}" />                                
+                    <div style="width: 98%; text-align: right;" class="imgBaixar">
+                        <button id="baixarSVG3" style="font: bold 14px Arial, Helvetica, sans-serif; background: rgb(242, 242, 242); color: rgb(0, 0, 0); text-shadow: rgb(255, 255, 255) -1px 1px 0px; border: 0px solid rgb(255, 255, 255); box-shadow: rgb(0, 0, 0) 0px 0px 7px; border-radius: 10px; padding: 7px 20px; cursor: pointer; display:#{diagnosticTest.visivelPlotRoc}" onclick="saveSvg3()">Baixar</button>
+                    </div>
+                    <hidden id="svgimg1" value="#{diagnosticTest.imgPlot}"></hidden>
+                    <hidden id="svgimg2" value="#{diagnosticTest.imgPlot_2}"></hidden>
+                    <hidden id="svgimg3" value="#{diagnosticTest.imgPlotRoc}"></hidden>
+                </div>
+                <div style="width: 10%;height: 10%; left:80%;" >
+                    <p:link outcome="sobre.xhtml" target="_blank" value="Sobre"/>
+
+                </div>
+            </h:form>
+        </div>
+        <div style="padding: auto; margin-top: 10px;">                                
+            <div id="idforest"/>                    
+        </div> 
+        
+        <h:outputScript library="js" name="d3.js" />
+        <h:outputScript library="js" name="mainJs.js" />
+    </h:body>
+</html>
+

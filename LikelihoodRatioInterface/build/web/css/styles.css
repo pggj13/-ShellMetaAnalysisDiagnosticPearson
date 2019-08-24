@@ -1,0 +1,83 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 25/05/2015, 21:35:32
+    Author     : R3oLoN
+*/
+.text-right{
+    text-align: right;
+}
+.center_content{
+    width: 70%;
+    margin: auto;
+}
+@media(max-width: 1200px){
+
+    .center_content{
+        width: 100%;
+    }
+}
+
+.ui-datatable .ui-datatable-footer{
+    padding: 0 10px;
+}
+
+.footer-cell{
+    float: left;
+    display: block; 
+    margin: 0px 0;
+}
+
+.w-100{
+    width: 100% !important;
+}
+.w-90{
+    width: 90% !important;
+}
+.w-95{
+    width: 95% !important;
+}
+
+.w-40{
+    width: 40% !important;
+}
+
+.w-50{
+    width: 50% !important;
+}
+
+.w-30{
+    width: 30% !important;
+}
+
+.w-20{
+    width: 20% !important;
+}
+
+.w-15{
+    width: 15% !important;
+}
+.w-10{
+    width: 10% !important;
+}
+.w-7{
+    width: 7% !important;
+}
+.h1{
+    width: 10%;
+    height: 10%; 
+    position:absolute;
+    left:50%;
+}
+
+.ui-chkbox-label{
+    margin: 0 !important;
+}
+
+.imgBaixar{
+    margin-top: 10px;
+}
+

@@ -1,0 +1,62 @@
+{
+  "name": "node-js-rest-api",
+  "version": "1.0.0",
+  "description": "A Nodejs demo for IBM Connect 2016",
+  "main": "gulpfile.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alex-arriaga/node-js-rest-api.git"
+  },
+  "keywords": [
+    "nodejs",
+    "restful",
+    "api",
+    "expressjs"
+  ],
+  "author": "Alex Arriaga",
+  "license": "UNLICENSED",
+  "private": true,
+  "bugs": {
+    "url": "https://github.com/alex-arriaga/node-js-rest-api/issues"
+  },
+  "homepage": "https://github.com/alex-arriaga/node-js-rest-api#readme",
+  "dependencies": {
+    "async": "^2.6.1",
+    "base-64": "^0.1.0",
+    "cheerio": "^1.0.0-rc.2",
+    "express": "^4.16.3",
+    "jsdom": "^11.12.0",
+    "request": "^2.87.0",
+    "utf-8": "^2.0.0",
+    "utf8": "^3.0.0",
+    "window": "^4.2.5"
+  },
+  "devDependencies": {
+    "body-parser": "^1.14.2",
+    "express": "^4.13.4",
+    "gulp": "^3.9.0",
+    "lodash": "^4.0.1",
+    "morgan": "^1.6.1",
+    "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.10",
+    "babel-cli": "^6.18.0",
+    "babel-preset-es2015": "^6.18.0",
+    "bower": "^1.8.4",
+    "cookie-parser": "~1.4.3",
+    "d3": "^4.4.1",
+    "d3-save-svg": "0.0.2",
+    "debug": "~2.2.0",
+    "ejs": "^2.5.5",
+    "serve-favicon": "~2.3.0",
+    "webpack": "^1.14.0",
+    "webpack-dev-middleware": "^1.9.0",
+    "webpack-hot-middleware": "^2.15.0",
+    "jsdom": "11.12.0",
+    "xmlserializer": "^0.6.1",
+    "blob": "0.0.4"
+  }
+}
