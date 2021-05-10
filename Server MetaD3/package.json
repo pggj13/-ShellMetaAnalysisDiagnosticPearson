@@ -39,7 +39,7 @@
     "body-parser": "^1.14.2",
     "express": "^4.13.4",
     "gulp": "^3.9.0",
-    "lodash": "^4.0.1",
+    "lodash": "^4.17.21",
     "morgan": "^1.6.1",
     "babel-core": "^6.21.0",
     "babel-loader": "^6.2.10",
