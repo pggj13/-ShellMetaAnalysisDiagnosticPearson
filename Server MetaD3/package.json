@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/alex-arriaga/node-js-rest-api#readme",
   "dependencies": {
-    "async": "^2.6.1",
+    "async": "^2.6.4",
     "base-64": "^0.1.0",
     "cheerio": "^1.0.0-rc.2",
     "express": "^4.16.3",
