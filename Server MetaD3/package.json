@@ -28,7 +28,7 @@
     "async": "^2.6.1",
     "base-64": "^0.1.0",
     "cheerio": "^1.0.0-rc.2",
-    "express": "^4.16.3",
+    "express": "^4.17.3",
     "jsdom": "^11.12.0",
     "request": "^2.87.0",
     "utf-8": "^2.0.0",
@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "body-parser": "^1.14.2",
-    "express": "^4.13.4",
+    "express": "^4.17.3",
     "gulp": "^3.9.0",
     "lodash": "^4.0.1",
     "morgan": "^1.6.1",
